@@ -2,6 +2,10 @@ var wordcount = 0;
 
 function offTimer(){
     var time = {"hours":$("#thours").val(), "minutes": $("#tminutes").val()};
+    if(time["hours"] == "")
+    {time['hours'] = 0;}
+    if(time["minutes"] == "")
+    {time['minutes'] = 0;}
     chrome.runtime.sendMessage({type: "timer","length": time}, function() {
        console.log("passed time to background.js"); 
     });
