@@ -8,6 +8,9 @@
     <body style="width: 300px; height: 600px;">
         <a href="popup.html"><img style="width: 40px; height: 22px;" src="images/back-arrow.png"></a>
         <h1>settings</h1>
+            <div>
+                <input class="timer" max="24" id="thours" type="number">:<input max="60" class="timer" id="tminutes" type="number">&nbsp;&nbsp;<button id="tbutton">start timer</button>
+            </div>
             <p id="listheader" style="font-size: medium;">
                 <a>blocked words</a><input id='pcbutton' type="checkbox">
                 <img id="expandarrow" src="images/downarrow.png" style="float: right; width: 22px; height: 22px;" >
@@ -16,8 +19,5 @@
                 <li><input type="text" style="width: 150px;" id="inputarea"><input id="addtolistbt" type="button" value="add" style="float: right;"></input></li>
             </ul>
             <br>
-            <div>
-                <input class="timer" max="24" id="thours" type="number">:<input max="60" class="timer" id="tminutes" type="number"><button id="tbutton"
-            </div>
     </body>
 </html>

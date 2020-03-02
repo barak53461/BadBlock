@@ -45,6 +45,10 @@ chrome.runtime.onMessage.addListener(
     {
       updatekarma(message['nodeid'],message['isad'])  
     }
+    else if(message['type'] === 'timer')
+    {
+      handelTimer(message['length']);
+    }
   }
 );
 /*

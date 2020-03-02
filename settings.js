@@ -1,4 +1,12 @@
 var wordcount = 0;
+
+function offTimer(){
+    var time = {"hours":$("#thours").val(), "minutes": $("#tminutes").val()};
+    chrome.runtime.sendMessage({type: "timer","length": time}, function() {
+       console.log("passed time to background.js"); 
+    });
+}
+
 function createDeleteElement() { 
     var deletenode = document.createElement("img");
     deletenode.id = "word" + wordcount;
@@ -6,8 +14,9 @@ function createDeleteElement() {
     deletenode.style = "float:right; height:15px; width15px;";
     deletenode.align = "middle";
     deletenode.onclick = createDeleteFunction(wordcount++);
-    return deletenode
+    return deletenode;
  }
+
 function appendtolist(listid,text){
     var node1=document.createElement("li");
     var textnode1=document.createTextNode(text);
@@ -17,6 +26,7 @@ function appendtolist(listid,text){
     var t=document.getElementById(listid);
     t.appendChild(node1);
 }
+
 function createDeleteFunction(index) { 
     var x =  function () { 
         $(`#myList1`).children()[index+1].remove();
@@ -28,6 +38,7 @@ function createDeleteFunction(index) {
      }
      return x;
  }
+
 function addtostoragelist(word) 
 {
     appendtolist("myList1",word)
@@ -42,10 +53,12 @@ function addtostoragelist(word)
         chrome.storage.sync.set({'pclist': pclist}, function() {});
     });
 }
+
 function scrolluplist(listid) {
     var lst = $(`#${listid}`)
     lst.slideToggle();
 }
+
 function reverseimgy(imgid){
     console.log($(imgid).css("transform"));
     $(imgid).css("transform","scaleY(-1)");
