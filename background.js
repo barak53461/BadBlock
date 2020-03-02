@@ -43,12 +43,12 @@ function handelTimer(length){
   if(activeAlarm)
   {return;}
   activeAlarm = true;
-  console.log(typeof(length["hours"]*60+length["minutes"]));
   chrome.alarms.create("turnon", {delayInMinutes:parseInt(length["hours"])*60+parseInt(length["minutes"])});
   chrome.storage.sync.set({'mode': 'off'}, function() {});
   chrome.alarms.onAlarm.addListener(function (alarm){
     chrome.storage.sync.set({'mode': 'block'}, function() {});
     activeAlarm = false;
+    chrome.alarms.clear("turnon");
   })
 }
 chrome.runtime.onMessage.addListener(
