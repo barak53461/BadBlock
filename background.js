@@ -38,6 +38,17 @@ function updatekarma(nodeid, isad) {
     }
   });
 }
+var activeAlarm = false;
+function handelTimer(length){
+  if(activeAlarm)
+  {return;}
+  activeAlarm = true;
+  chrome.alarms.create("turnon", {delayInMinutes:length["hours"]*60+length["minutes"]});
+  chrome.storage.sync.set({'mode': 'off'}, function() {});
+  chrome.alarms.onAlarm.addListener(function (alarm){
+    chrome.storage.sync.set({'mode': 'block'}, function() {});
+  })
+}
 chrome.runtime.onMessage.addListener(
   //recives the karma messege and passes the arguments to the karma handeler
   function(message, sender, sendResponse) {

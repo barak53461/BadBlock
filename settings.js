@@ -89,6 +89,7 @@ $(document).ready(function(){
         addtostoragelist(newdata);
         $("#inputarea").val("");
     });
+    $("#btimer").click(offTimer);
     chrome.storage.sync.get('pclistMode', function({pclistMode}){
         $("#pcbutton").prop("checked",pclistMode);
         $("#pcbutton").click(()=>{
