@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>popup</title><!--
+<link rel="stylesheet" type="text/css" href="style.css">-->
+</head>
+<body>
+<span id="test"></span>
+<script type="text/javascript" src="jquery-3.3.1.js"></script>
+<script type="text/javascript" src="popup.js"></script>
+<div id="radiocheck" class="container" >
+    <h2>adblock options:</h2>
+  <ul>
+  <li>
+    <input type="radio" id="off" name="selector">
+    <label for="off">off</label>
+    
+    <div class="check"></div>
+  </li>
+  <li>
+    <input type="radio" id="block" name="selector">
+    <label for="block">block</label>
+    
+    <div class="check"><div class="inside"></div></div>
+  </li>
+  <li>
+      <input type="radio" id="blur" name="selector">
+      <label for="blur">blur</label>
+      <div class="check"><div class="inside"></div></div>
+    </li>
+    <li>
+      <input type="range" min="0" max='20' id="slider">
+      <br>
+      <img id="blurSample" src="images/butterfly.png">
+    </li>
+</ul>
+</div>
+</div>
+<p id="adCount" style="color:rgb(7, 224, 123)"></p>
+<button id="removebutton">remove ad manually</button>
+<br><br>
+<button id="whitelistPage">whitelist this page</button><button id="unWhitelistPage">remove site from whitelist</button>
+<br><br>
+<a href="settings.html"><img style="height: 22px; width: 22px;" id="settingsbutton" src="images/Settings.png"></a>
+<br>
+<a style="font-weight: bold; color: chartreuse;" id='whitelistText'></a>
+</body>
+</html>
