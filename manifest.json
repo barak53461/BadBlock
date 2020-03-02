@@ -24,7 +24,7 @@
 	}
   ],
   "permissions": [
-    "http://*/*", "https://*/*", "contextMenus", "webRequest", "tabs", "idle", "storage", "activeTab", "declarativeContent", "webRequestBlocking", "webNavigation"
+    "http://*/*", "https://*/*", "contextMenus", "webRequest", "tabs", "idle", "storage", "activeTab", "declarativeContent", "webRequestBlocking", "webNavigation","alarms"
   ],
   "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'"
 }

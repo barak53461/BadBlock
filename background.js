@@ -43,6 +43,7 @@ function handelTimer(length){
   if(activeAlarm)
   {return;}
   activeAlarm = true;
+  console.log(length["hours"]*60+length["minutes"]);
   chrome.alarms.create("turnon", {delayInMinutes:length["hours"]*60+length["minutes"]});
   chrome.storage.sync.set({'mode': 'off'}, function() {});
   chrome.alarms.onAlarm.addListener(function (alarm){
