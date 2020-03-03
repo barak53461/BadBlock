@@ -6,6 +6,7 @@ const DEFULTPCMODE = true;
 const FILTER = {urls: ["<all_urls>"]}; // urls to FILTER
 const OPT_EXREAINFOSPEC = ["blocking"];
 const SERVERURL = "http://127.0.0.1:8080";
+const LOCALSCRIPTLIST = ["settings.js","popup.js"];
 var urllst = [];
 
 chrome.runtime.onInstalled.addListener(function() {
@@ -64,33 +65,7 @@ chrome.runtime.onMessage.addListener(
     }
   }
 );
-/*
-function setmclisten(message, sender, sendResponse) {
-  console.log(data);
-  if(message['type'] === 'startUp')
-  {
-    console.log(data);
-    sendResponse(data)
-  }
-}
-function QuarryToServer(){
-  chrome.runtime.onMessage.removeListener(setmclisten);
-  $.ajax({
-    type: "GET",
-    async: true,
-    form: 'formatted',
-    url: SERVERURL,
-    success: function (data) {
-      //sends a get 
-      console.log("set startup listener");
-      debugger;
-      chrome.runtime.onMessage.addListener(setmclisten);
-    },
-    fail: function () { console.error("error quarrying server"); }
-  });
-}
-QuarryToServer();
-*/
+
 function setmclisten(message, sender, sendResponse, data) { // *** Note `data` param
                                                             // at end
   console.log(data);
@@ -100,36 +75,29 @@ function setmclisten(message, sender, sendResponse, data) { // *** Note `data` p
     sendResponse(data)
   }
 }
-let lastListener = null; // *** Remember the last listener
 function QuarryToServer(){
-  // *** Remove the last listener if any
-  if (lastListener) {
-      chrome.runtime.onMessage.removeListener(lastListener);
-      lastListener = null;
-  }
   $.ajax({
     type: "GET",
     async: true,
     form: 'formatted',
     url: SERVERURL,
     success: function (data) {
-      //sends a get 
-      console.log("set startup listener");
-      // *** Create a new listener and attach it
-      lastListener = function(message, sender, sendResponse) {
-          return setmclisten(message, sender, sendResponse, data);
-          // *** Or if `this` is important in the call:
-          // return setmclisten.call(this, message, sender, sendResponse, data);
-      };
-      chrome.runtime.onMessage.addListener(lastListener);
+      chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+        if(message['type'] === 'startUp')
+        {
+          console.log(data);
+          sendResponse(data);
+        }
+      });
     },
     fail: function () { console.error("error quarrying server"); }
   });
 }
-QuarryToServer();
 
 function handelIcon() {
   chrome.storage.onChanged.addListener(function(changes,namespace){
+    if(changes.mode == undefined)
+    {return;}
     mode = changes.mode.newValue;
     if(mode === "off")
     {
@@ -140,21 +108,28 @@ function handelIcon() {
   });
 }
 
+function checkIfScriptLocal(url) {
+  return url.includes(LOCALSCRIPTLIST[0]) || url.includes(LOCALSCRIPTLIST[1]);
+}
+
 //from here we will block incoming scripts that target ads to us
 function handeladblock(){
   console.log("blocking scripts")
   chrome.storage.sync.get('mode', function({mode}){ 
     chrome.storage.onChanged.addListener(function(changes,namespace){
+      if(changes.mode == undefined)
+      {return;}
       mode = changes.mode.newValue;
     });
     chrome.webRequest.onBeforeRequest.addListener(function(details){
       //sets up a listen to compare current request to saved ads request and blocks it since it compares it alot of times it causes a slight lag
-      if(mode !== 'block')
+      if(checkIfScriptLocal(details.url) || mode !== 'block')
       {return;}
 
       var cancel = null;
       urllst.forEach(url => {
-        if(!details.url.includes("popup.js") && details.url.includes(url))
+
+        if(details.url.includes(url))
         {
           console.log(details.url);
           cancel = {cancel: true};    
@@ -168,7 +143,6 @@ function handeladblock(){
   });
 }
 
-
 function fillurllst(){
     console.time("Loading script list and setting listener took")
     jQuery.get('https://easylist.to/easylist/easylist.txt', function(data) {
@@ -178,7 +152,8 @@ function fillurllst(){
 }
 
 console.log("running func");
-//fillurllst();
+QuarryToServer();
+fillurllst();
 handeladblock();
 handelIcon();
 chrome.runtime.onMessage.addListener(

@@ -60,7 +60,6 @@ function updateUI(){
         break;
       case "off":
         document.getElementById("off").checked = true;
-        document.getElementById("adCount").innerHTML = "amount of ads blocked: 0 adblock is off " ;
         break;
       default:
         console.error("undefined mode");
@@ -71,7 +70,6 @@ function updateUI(){
   // sets the slider level according to last choice of user and blurs the image accordingly
   document.getElementById('slider').value = blur*10;
   $(`#blurSample`).css(`filter`, `blur(${blur}rem)`)
-  console.log(blurlvl);
   // document.getElementById('blurSample').style = `filter:blur(${blurlvl}rem)`
   // $('#blurSample').css(`filter`, `blur(${blurlvl}rem)`);
   });
@@ -128,20 +126,18 @@ document.body.onload = function(){
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {type: "getCount"}, function(count) {
             //asks the content script of the current page a "getCount" question and prints to UI accordingly
-            if(count == -1)
-            {
+            if(count == -1){
               document.getElementById("adCount").innerHTML = "adblock is off";
               return;
             }
-            else if(count == 0)
-            {
+            else if(count == 0){
               document.getElementById("adCount").innerHTML = "no ads found";
               return;
             }
             if(typeof(count) == typeof(1) && count != -1){
                 document.getElementById("adCount").innerHTML = "detected " + count + " ads";
                 return;
-              } else {console.error(`adcount recived is not of type int but of ${typeof(count)}`)}
+            } 
         });
     });
     
