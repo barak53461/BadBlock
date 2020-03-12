@@ -25,6 +25,7 @@ function appendtolist(listid,text){
     var node1=document.createElement("li");
     var textnode1=document.createTextNode(text);
     var deletenode = createDeleteElement();
+    node1.classList.add("dropdown-item");
     node1.append(deletenode);
     node1.appendChild(textnode1);
     var t=document.getElementById(listid);
@@ -80,8 +81,55 @@ $(document).ready(function() {
         });
     });
 }); 
+function getOrigin(url) { 
+    var a = document.createElement("a");
+    a.href = url;
+    return a.host;
+}
+function addToWL() { 
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      //gets a list containing the active page and assigns it to tabs where the first place is the active tab
+        var origin = getOrigin(tabs[0].url);
+        chrome.storage.sync.get("whitelist", function({whitelist}){
+          if(whitelist.indexOf(origin)!=-1){
+            return;
+          }
+          list = whitelist
+          list.push(origin)
+          console.log(list);
+          $("#whitelistText").html('this website is whitelisted')
+          chrome.storage.sync.set({"whitelist":list},function () { 
+             console.log(`added ${origin} to the white list`);
+           });
+      });
+    });
+  }
 
+function removeFromWL() { 
+chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    //gets a list containing the active page and assigns it to tabs where the first place is the active tab
+    var origin = getOrigin(tabs[0].url);
+    chrome.storage.sync.get("whitelist", function({whitelist}){
+        if(whitelist.indexOf(origin)==-1){
+        return;
+        }
+        $("#whitelistText").html('')
+        list = whitelist
+        list.splice(whitelist.indexOf(origin),1)
+        chrome.storage.sync.set({"whitelist":list},function () { 
+            console.log(`removed ${origin} from the white list`);
+        });
+    });
+});
+}
 $(document).ready(function(){
+    $('#whitelistPage').click(addToWL);
+    $('#unWhitelistPage').click(removeFromWL);
+    $(document).on('click', ".header", function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        alert($(this).data('id'))
+    })
     $("#expandarrow").click(()=>{
         scrolluplist("myList1");
         reverseimgy("#expandarrow");

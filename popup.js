@@ -5,47 +5,6 @@ $(document).on(`input change`, `#slider`, function() {
     console.log(`blur set to ${$(this).val()/10}rem`);
   });
 });
-function getOrigin(url) { 
-  var a = document.createElement("a");
-  a.href = url;
-  return a.host;
-}
-function addToWL() { 
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    //gets a list containing the active page and assigns it to tabs where the first place is the active tab
-      var origin = getOrigin(tabs[0].url);
-      chrome.storage.sync.get("whitelist", function({whitelist}){
-        if(whitelist.indexOf(origin)!=-1){
-          return;
-        }
-        list = whitelist
-        list.push(origin)
-        console.log(list);
-        $("#whitelistText").html('this website is whitelisted')
-        chrome.storage.sync.set({"whitelist":list},function () { 
-           console.log(`added ${origin} to the white list`);
-         });
-    });
-  });
-}
-function removeFromWL() { 
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    //gets a list containing the active page and assigns it to tabs where the first place is the active tab
-      var origin = getOrigin(tabs[0].url);
-      chrome.storage.sync.get("whitelist", function({whitelist}){
-        if(whitelist.indexOf(origin)==-1){
-          return;
-        }
-        $("#whitelistText").html('')
-        list = whitelist
-        list.splice(whitelist.indexOf(origin),1)
-        chrome.storage.sync.set({"whitelist":list},function () { 
-           console.log(`removed ${origin} from the white list`);
-         });
-    });
-  });
-}
-
 function updateUI(){
     // incharge of updating the ui to the last saved settings from chrome storage
   chrome.storage.sync.get("mode", function({mode}){
@@ -82,13 +41,18 @@ function changeMode(value){
     });
     
 }
+function getOrigin(url) { 
+  var a = document.createElement("a");
+  a.href = url;
+  return a.host;
+}
 function WLMessge(){
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     //gets a list containing the active page and assigns it to tabs where the first place is the active tab
       var origin = getOrigin(tabs[0].url);
       chrome.storage.sync.get("whitelist", function({whitelist}){
         if(whitelist.indexOf(origin)!=-1){
-          $("#whitelistText").html('this website is whitelisted')
+          $("#whitelistText").html('<div class="alert alert-success" id="whitelistText" role="alert">this website is whitelisted</div>');
         }
     });
   });
@@ -119,8 +83,6 @@ function manuelremove(){
 document.body.onload = function(){
     //the script below will only run once the popup page is loaded
     updateUI();//calls updateUI to reset UI to preset values
-    $('#whitelistPage').click(addToWL);
-    $('#unWhitelistPage').click(removeFromWL);
     $("#radiocheck").click(radiocheck);//binds the radiocheck handeler function to run onclick on the mode menu
     $("#removebutton").click(manuelremove);//binds the manuel remove handel to button
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {

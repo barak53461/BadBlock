@@ -1,6 +1,8 @@
 body {
+    overflow: hidden; /*removes scrollbar */
     padding-top: 20px;
     padding-bottom: 40px;
+    height: 580px;
     background-color: #eee;
     background-image: url('http://cleancanvas.herokuapp.com/img/backgrounds/color-splash.jpg');
     background-size: cover;
@@ -13,7 +15,6 @@ ul {
     list-style-type: none;
 }
 li{
-    padding-bottom: 5px;
 }
 div{
     padding-left: 0%;
