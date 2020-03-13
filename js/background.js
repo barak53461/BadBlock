@@ -101,10 +101,10 @@ function handelIcon() {
     mode = changes.mode.newValue;
     if(mode === "off")
     {
-      chrome.browserAction.setIcon({path:"/images/addblock_off.png"});
+      chrome.browserAction.setIcon({path:"../resources/images/addblock_off.png"});
       return;
     }
-    chrome.browserAction.setIcon({path:"images/addblock.png"});
+    chrome.browserAction.setIcon({path:"../resources/images/addblock.png"});
   });
 }
 
