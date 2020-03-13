@@ -14,8 +14,7 @@ body {
 ul {
     list-style-type: none;
 }
-li{
-}
+
 div{
     padding-left: 0%;
 }
@@ -23,9 +22,17 @@ div{
 .custom-control {
     padding-left: 0cm;
 }
+
 #header{
     text-align: left;
 }
+
 .blackout{
     filter: brightness(0);
+}
+
+#options{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.4mm;
 }
