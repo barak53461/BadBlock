@@ -39,11 +39,12 @@ function updatekarma(nodeid, isad) {
     }
   });
 }
-var activeAlarm = false;
+
+var activeAlarm = false; //boolean to remember wheter a timer is already active
 function handelTimer(length){
   if(activeAlarm)
   {return;}
-  activeAlarm = true;
+  activeAlarm = true;//symbols starting a new timer
   chrome.alarms.create("turnon", {delayInMinutes:parseInt(length["hours"])*60+parseInt(length["minutes"])});
   chrome.storage.sync.set({'mode': 'off'}, function() {});
   chrome.alarms.onAlarm.addListener(function (alarm){
@@ -52,29 +53,24 @@ function handelTimer(length){
     chrome.alarms.clear("turnon");
   })
 }
+
 chrome.runtime.onMessage.addListener(
   //recives the karma messege and passes the arguments to the karma handeler
   function(message, sender, sendResponse) {
     if(message['type'] === 'manuelfound')
     {
-      updatekarma(message['nodeid'],message['isad'])  
+      updatekarma(message['nodeid'],message['isad']);  
+      sendResponse("Updated Server");
     }
     else if(message['type'] === 'timer')
     {
       handelTimer(message['length']);
+      sendResponse("Started timer");
     }
   }
 );
 
-function setmclisten(message, sender, sendResponse, data) { // *** Note `data` param
-                                                            // at end
-  console.log(data);
-  if(message['type'] === 'startUp')
-  {
-    console.log(data);
-    sendResponse(data)
-  }
-}
+
 function QuarryToServer(){
   $.ajax({
     type: "GET",
@@ -82,8 +78,9 @@ function QuarryToServer(){
     form: 'formatted',
     url: SERVERURL,
     success: function (data) {
-      chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-        if(message['type'] === 'startUp')
+      chrome.runtime.onMessage.addListener(
+      function (message, sender, sendResponse) {
+        if(message['type'] === 'startUp')// sets up a listner that sends the data from the server to startUp requests
         {
           console.log(data);
           sendResponse(data);
@@ -94,9 +91,9 @@ function QuarryToServer(){
   });
 }
 
-function handelIcon() {
+function handelIcon() {// changes the icon's image to green if the addon is turned off
   chrome.storage.onChanged.addListener(function(changes,namespace){
-    if(changes.mode == undefined)
+    if(changes.mode == undefined)// checks if it was the mode value that was changed
     {return;}
     mode = changes.mode.newValue;
     if(mode === "off")
@@ -108,7 +105,7 @@ function handelIcon() {
   });
 }
 
-function checkIfScriptLocal(url) {
+function checkIfScriptLocal(url) { // recives a request's url and returns true if its our own scripts  
   return url.includes(LOCALSCRIPTLIST[0]) || url.includes(LOCALSCRIPTLIST[1]);
 }
 
@@ -122,13 +119,13 @@ function handeladblock(){
       mode = changes.mode.newValue;
     });
     chrome.webRequest.onBeforeRequest.addListener(function(details){
-      //sets up a listen to compare current request to saved ads request and blocks it since it compares it alot of times it causes a slight lag
-      if(checkIfScriptLocal(details.url) || mode !== 'block')
-      {return;}
+      //sets up a listner that fires before request's 
+      if(checkIfScriptLocal(details.url) || mode !== 'block') // exits function if the request is local or if the addon is off
+      {return;} 
 
       var cancel = null;
-      urllst.forEach(url => {
-
+      urllst.forEach(url => {// goes over the urls we have and compares them to the 
+                             // current request if they are the same blocks the request
         if(details.url.includes(url))
         {
           console.log(details.url);
@@ -137,17 +134,18 @@ function handeladblock(){
       });
       if(cancel != null)
       {
-        return cancel
+        return cancel;
       }
     }, FILTER, OPT_EXREAINFOSPEC);        
   });
 }
 
 function fillurllst(){
-    console.time("Loading script list and setting listener took")
-    jQuery.get('https://easylist.to/easylist/easylist.txt', function(data) {
-    urllst = data.match(REGEXJSFILTER)
-    console.timeEnd("Loading script list and setting listener took")
+    console.time("Loading script list and setting listener took");
+    jQuery.get('https://easylist.to/easylist/easylist.txt', function(data) {// gets the scripts from easylist by the 
+                                                                            // regex filter and saves it to urllist
+      urllst = data.match(REGEXJSFILTER);
+      console.timeEnd("Loading script list and setting listener took");
     });
 }
 
@@ -157,8 +155,8 @@ fillurllst();
 handeladblock();
 handelIcon();
 chrome.runtime.onMessage.addListener(
-  function(message, sender, sendResponse) {
-    debugger;
+  function(message, sender, sendResponse) {// recives a node removed by a user and 
+                                           // sends a messge to the server to add it 
     if(message['type'] == 'manuelAd')
     {
       $.ajax({
