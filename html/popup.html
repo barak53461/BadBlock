@@ -1,54 +1,69 @@
 <html>
-<head>
-<title>popup</title><!--
-<link rel="stylesheet" type="text/css" href="style.css">-->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 
-<link rel="stylesheet" type="text/css" href="../css/popupStyle.css">
-</head>
-<body>
-<script type="text/javascript" src="../js/popup.js"></script>
-<div class="custom-control custom-checkbox">
-<div id="radiocheck" class="container" >
-  <nav id="header" class="navbar navbar-light transparent">
-    <span class="navbar-brand mb-0 h1">
-      <img src="../resources/images/addblock.png" width="30" height="30" class="d-inline-block align-top" alt="">
-      BadBlock
-    </span>
-    <a class="navbar-brand " href="settings.html">
-      <img src="../resources/images/Settings.png" width="30" height="30" class="d-inline-block align-top blackout" alt="">
-    </a>
-  </nav>
-  <div id="options" class="custom-control custom-radio">
-    <ul>
-      <li>
-        <input type="radio" class="custom-control-input" id="off" name="selector">
-        <label class="custom-control-label" for="off">Off</label>
-      </li>
-      <li>
-        <input type="radio" class="custom-control-input" id="block" name="selector">
-        <label class="custom-control-label" for="block">Block</label>
-      </li>
-      <li>
-          <input type="radio" class="custom-control-input" id="blur" name="selector">
-          <label class="custom-control-label" for="blur">Blur</label>
-        </li>
-      <li>
-        <input type="range" class="custom-range" min="0" max='20' id="slider">
-        <br>
-        <img id="blurSample" src="../resources/images/butterfly.png">
-      </li>
-    </ul>
-  </div>
-</div>
-</div>
-<p id="adCount" style="color:rgb(7, 224, 123)"></p>
-<button id="removebutton" class="btn btn-danger">remove ad manually</button>
-<br><br>
-<div id=whitelistText></div>
-</body>
+  <head>
+    <title>popup</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/popupStyle.css">
+    <script type="text/javascript" src="../js/popup.js"></script>
+  </head>
+
+  <body>
+    <div id="radiocheck" class="custom-control custom-checkbox container">
+      
+      <nav id="header" class="navbar navbar-light transparent">
+
+        <span class="navbar-brand mb-0 h1">
+          <img src="../resources/images/addblock.png" width="30" height="30" class="d-inline-block align-top" alt="">
+          BadBlock
+        </span>
+        
+        <a class="navbar-brand " href="settings.html">
+          <img src="../resources/images/Settings.png" width="30" height="30" class="d-inline-block align-top blackout" alt="">
+        </a>
+
+      </nav>
+
+      <div id="options" class="custom-control custom-radio">
+        <ul>
+
+          <li>
+            <input type="radio" class="custom-control-input" id="off" name="selector">
+            <label class="custom-control-label" for="off">Off</label>
+          </li>
+
+          <li>
+            <input type="radio" class="custom-control-input" id="block" name="selector">
+            <label class="custom-control-label" for="block">Block</label>
+          </li>
+
+          <li>
+              <input type="radio" class="custom-control-input" id="blur" name="selector">
+              <label class="custom-control-label" for="blur">Blur</label>
+          </li>
+
+          <li>
+            <input type="range" class="custom-range" min="0" max='20' id="slider">
+            <br>
+            <img id="blurSample" src="../resources/images/butterfly.png">
+          </li>
+
+        </ul>
+      </div>
+
+    </div>
+
+    <p id="adCount" style="color:rgb(7, 224, 123)"></p>
+
+    <button id="removebutton" class="btn btn-danger">remove ad manually</button>
+    
+    <br>
+    <br>
+
+    <div id=whitelistText></div>
+  
+  </body>
 </html>

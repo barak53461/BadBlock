@@ -80,7 +80,7 @@ function manuelremove(){
   });
 }
 
-document.body.onload = function(){
+$(document).ready(function(){
     //the script below will only run once the popup page is loaded
     updateUI();//calls updateUI to reset UI to preset values
     $("#radiocheck").click(radiocheck);//binds the radiocheck handeler function to run onclick on the mode menu
@@ -102,5 +102,4 @@ document.body.onload = function(){
             } 
         });
     });
-    
-  }
+});

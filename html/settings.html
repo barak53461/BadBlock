@@ -1,39 +1,56 @@
 <html>
     <head>
+        <title>settings</title>
         <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
         <script src="../js/settings.js"></script>
-        <title>settings</title>
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="../css/settingsStyle.css">
     </head>
+
     <body style="width: 300px; height: 600px;">
-            <nav class="navbar navbar-light">
-                <a class="navbar-brand h1" href="popup.html">
-                    <img style="width: 40px; height: 22px; vertical-align: text-top;" src="../resources/images/back-arrow.png" width="30" height="30" alt="">
-                    <span class="header">Settings</span>
-                </a>
-            </nav>
-            <div>
-                <h3>Stop Timer</h3>
-                <form class="form-inline">
-                    <input class="timer form-control" max="24" id="thours" min="0" type="number"><span class='h3'>:</span><input max="60" min="1" class="timer form-control" id="tminutes" type="number">&nbsp;&nbsp;<button class="btn btn-dark" id="tbutton">Pause</button>
-                </form>    
-            </div>
-            <br>
-            <button id="whitelistPage" class="btn btn-primary">whitelist site</button>&NonBreakingSpace;&NonBreakingSpace;<button id="unWhitelistPage" class="btn btn-primary">Remove site</button>
-            <br>
-            <br>
-            <br>
+        <nav class="navbar navbar-light">
+            <a class="navbar-brand h1" href="popup.html">
+                <img style="width: 40px; height: 22px; vertical-align: text-top;" src="../resources/images/back-arrow.png" width="30" height="30" alt="">
+                <span class="header"> Settings </span>
+            </a>
+        </nav>
+
+        <div>
+            <h3> Stop Timer </h3>
+            <form class="form-inline">
+                <input class="timer form-control" max="24" id="thours" min="0" type="number"><span class='h3'> : </span><input max="60" min="1" class="timer form-control" id="tminutes" type="number">&nbsp;&nbsp;
+                <button class="btn btn-dark" id="tbutton"> Pause </button>
+            </form>    
+        </div>
+
+        <br>
+
+        <div id="whitelistButtons">
+            <button id="whitelistPage" class="btn btn-primary">whitelist site</button>&nbsp;&nbsp;<!--   (&nbsp = space = " "), used to space the add button from remove button   -->
+            <button id="unWhitelistPage" class="btn btn-primary">Remove site</button>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <div id="blockList">
+
             <p id="listheader" style="font-size: medium;">
                 <a>blocked words</a><input id='pcbutton' type="checkbox">
                 <img id="expandarrow" src="../resources/images/downarrow.png" style="float: right; width: 22px; height: 22px;" >
             </p>
+
             <ul id="myList1">
-                <li><input type="text" style="width: 150px;" id="inputarea"><input id="addtolistbt" type="button" value="add" style="float: right;"></input></li>
+                <li>
+                    <input type="text" style="width: 150px;" id="inputarea">
+                    <input id="addtolistbt" type="button" value="add" style="float: right;"></input>
+                </li>
             </ul>
-            
+
+        </div>
     </body>
 </html>
