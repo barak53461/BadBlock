@@ -1,6 +1,7 @@
 var wordcount = 0;
 
-function offTimer(){
+function offTimer(){// obtains the minutes and hours to wait
+                    // and passes the time with the appropriate message type to background
     var time = {"hours":$("#thours").val(), "minutes": $("#tminutes").val()};
     if(time["hours"] == "")
     {time['hours'] = 0;}
@@ -11,7 +12,8 @@ function offTimer(){
     });
 }
 
-function createDeleteElement() { 
+function createDeleteElement() {// creates the deletion element and 
+                                // gives it the appropriate attributes
     var deletenode = document.createElement("img");
     deletenode.id = "word" + wordcount;
     deletenode.src = "images/xicon.png";
@@ -21,18 +23,20 @@ function createDeleteElement() {
     return deletenode;
  }
 
-function appendtolist(listid,text){
+function appendtolist(listid,text){// gets a list and text adds it to the list with
+                                   // the appropriate sub elements and attributes
     var node1=document.createElement("li");
     var textnode1=document.createTextNode(text);
     var deletenode = createDeleteElement();
     node1.classList.add("dropdown-item");
-    node1.append(deletenode);
+    node1.appendChild(deletenode);
     node1.appendChild(textnode1);
     var t=document.getElementById(listid);
     t.appendChild(node1);
 }
 
-function createDeleteFunction(index) { 
+function createDeleteFunction(index) { // makes a diffrent function for every 
+                                       // based on its index and returns that function 
     var x =  function () { 
         $(`#myList1`).children()[index+1].remove();
         wordcount--;
@@ -44,8 +48,8 @@ function createDeleteFunction(index) {
      return x;
  }
 
-function addtostoragelist(word) 
-{
+function addtostoragelist(word) {// recives a word sends it to "appendtolist" and
+                                 // adds it to pclist in chrome storage
     appendtolist("myList1",word)
     chrome.storage.sync.get('pclist', function({pclist}){
         if(pclist == null)
@@ -59,20 +63,7 @@ function addtostoragelist(word)
     });
 }
 
-function scrolluplist(listid) {
-    var lst = $(`#${listid}`)
-    lst.slideToggle();
-}
-
-function reverseimgy(imgid){
-    console.log($(imgid).css("transform"));
-    $(imgid).css("transform","scaleY(-1)");
-    $(imgid).css("-webkit-transform","scaleY(-1)");
-    $(imgid).css("-moz-transform","scaleY(-1)");
-    $(imgid).css("-o-transform","scaleY(-1)");
-
-}
-$(document).ready(function() { 
+$(document).ready(function() { // updates the list to contain words saved previously
     chrome.storage.sync.get('pclist', function({pclist}){
         if(pclist == null)
         {return;}
@@ -81,12 +72,15 @@ $(document).ready(function() {
         });
     });
 }); 
-function getOrigin(url) { 
+
+function getOrigin(url) { // recives a url and returns its origin for example:
+                          // getOrigin('https://www.youtube.com/watch?v=oHg5SJYRHA0') = www.youtube.com
     var a = document.createElement("a");
     a.href = url;
     return a.host;
 }
-function addToWL() { 
+
+function addToWL() { //adds the current open tab to White list
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       //gets a list containing the active page and assigns it to tabs where the first place is the active tab
         var origin = getOrigin(tabs[0].url);
@@ -94,10 +88,9 @@ function addToWL() {
           if(whitelist.indexOf(origin)!=-1){
             return;
           }
-          list = whitelist
-          list.push(origin)
+          list = whitelist;
+          list.push(origin);
           console.log(list);
-          $("#whitelistText").html('this website is whitelisted')
           chrome.storage.sync.set({"whitelist":list},function () { 
              console.log(`added ${origin} to the white list`);
            });
@@ -105,7 +98,8 @@ function addToWL() {
     });
   }
 
-function removeFromWL() { 
+function removeFromWL() { // removes the current open tab from whitelist if the current site isnt 
+                          // in the whitelist this function does nothing
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     //gets a list containing the active page and assigns it to tabs where the first place is the active tab
     var origin = getOrigin(tabs[0].url);
@@ -113,9 +107,8 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         if(whitelist.indexOf(origin)==-1){
         return;
         }
-        $("#whitelistText").html('')
-        list = whitelist
-        list.splice(whitelist.indexOf(origin),1)
+        list = whitelist;
+        list.splice(whitelist.indexOf(origin),1);
         chrome.storage.sync.set({"whitelist":list},function () { 
             console.log(`removed ${origin} from the white list`);
         });
@@ -123,26 +116,28 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 });
 }
 $(document).ready(function(){
-    $('#whitelistPage').click(addToWL);
+    $('#whitelistPage').click(addToWL); //binds both the add and remove whitelist buttons
     $('#unWhitelistPage').click(removeFromWL);
-    $(document).on('click', ".header", function(e) {
+    $(document).on('click', ".header", function(e) {// makes it so only the image in header is a link
         e.stopPropagation();
         e.preventDefault();
-        alert($(this).data('id'))
     })
-    $("#expandarrow").click(()=>{
-        scrolluplist("myList1");
-        reverseimgy("#expandarrow");
+    $("#expandarrow").click(()=>{// binds the arrow clicking to expand the list and flips the arrow
+        $("#myList1").slideToggle();
+        $("#expandarrow").toggleClass("reverse");
     });
-    $("#addtolistbt").click(function (){
+    $("#addtolistbt").click(function (){ // everytime this button is clicked the input is sent to 
+                                         // "adddtostoragelist" for handeling and the input is cleared
         newdata = $("#inputarea").val();
         if(newdata == "")
         {return;}
         addtostoragelist(newdata);
         $("#inputarea").val("");
     });
-    $("#tbutton").click(offTimer);
-    chrome.storage.sync.get('pclistMode', function({pclistMode}){
+    $("#tbutton").click(offTimer);// binds the timer handler
+    chrome.storage.sync.get('pclistMode', function({pclistMode}){// checks or leaves unchecked the blocked words
+                                                                 // mode according to storage and makes it so
+                                                                 // it updates storage if its clicked
         $("#pcbutton").prop("checked",pclistMode);
         $("#pcbutton").click(()=>{
             chrome.storage.sync.get('pclistMode', function({pclistMode}){
