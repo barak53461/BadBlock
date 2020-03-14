@@ -28,29 +28,35 @@
 
         <br>
 
-        <div id="whitelistButtons">
-            <button id="whitelistPage" class="btn btn-primary">whitelist site</button>&nbsp;&nbsp;<!--   (&nbsp = space = " "), used to space the add button from remove button   -->
-            <button id="unWhitelistPage" class="btn btn-primary">Remove site</button>
-        </div>
-
-        <br>
-        <br>
-        <br>
-
         <div id="blockList">
 
-            <p id="listheader" style="font-size: medium;">
-                <a>blocked words</a><input id='pcbutton' type="checkbox">
+            <div class="custom-control custom-checkbox" id="listheader" style="font-size: medium;">
+                <a>Blocked words</a>
+                <input id='pcbutton' class="custom-control-input" type="checkbox">
+                <label class="custom-control-label" for="pcbutton"></label>
+                <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="pcbutton">
+                    <label class="custom-control-label" for="customCheck1"></label>
+                </div> -->
                 <img id="expandarrow" src="../resources/images/downarrow.png" style="float: right; width: 22px; height: 22px;" >
-            </p>
+            </div>
 
             <ul id="myList1">
                 <li>
-                    <input type="text" style="width: 150px;" id="inputarea">
-                    <input id="addtolistbt" type="button" value="add" style="float: right;"></input>
+                    <form class="form-inline" id="inputLine">
+                        <input type="text" class="form-control mb-2 mr-sm-2" style="width: 150px;" id="inputarea">&nbsp;
+                        <input id="addtolistbt" class="btn btn-danger" type="button" value="add" style="float: right;"></input>
+                    </form>
                 </li>
             </ul>
 
+        </div>
+
+        <br>
+
+        <div id="whitelistButtons">
+            <button id="whitelistPage" class="btn btn-primary">whitelist site</button>&nbsp;&nbsp;<!--   (&nbsp = space = " "), used to space the add button from remove button   -->
+            <button id="unWhitelistPage" class="btn btn-primary">Remove site</button>
         </div>
     </body>
 </html>

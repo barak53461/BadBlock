@@ -1,3 +1,4 @@
+const DELETE_IMGS_CLASS = "deleteimgs";
 var wordcount = 0;
 
 function offTimer(){// obtains the minutes and hours to wait
@@ -16,9 +17,9 @@ function createDeleteElement() {// creates the deletion element and
                                 // gives it the appropriate attributes
     var deletenode = document.createElement("img");
     deletenode.id = "word" + wordcount;
-    deletenode.src = "images/xicon.png";
-    deletenode.style = "float:right; height:15px; width15px;";
+    deletenode.src = "../resources/images/xicon.png";
     deletenode.align = "middle";
+    deletenode.classList.add(DELETE_IMGS_CLASS);
     deletenode.onclick = createDeleteFunction(wordcount++);
     return deletenode;
  }
@@ -28,7 +29,6 @@ function appendtolist(listid,text){// gets a list and text adds it to the list w
     var node1=document.createElement("li");
     var textnode1=document.createTextNode(text);
     var deletenode = createDeleteElement();
-    node1.classList.add("dropdown-item");
     node1.appendChild(deletenode);
     node1.appendChild(textnode1);
     var t=document.getElementById(listid);
