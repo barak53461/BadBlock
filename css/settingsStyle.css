@@ -28,7 +28,7 @@ li:nth-child(odd){
 #pcbutton{
     vertical-align: middle;    
 }
-#myList1
+#blockedWordsList
 {
     display: none;
 }

@@ -38,7 +38,7 @@ function appendtolist(listid,text){// gets a list and text adds it to the list w
 function createDeleteFunction(index) { // makes a diffrent function for every 
                                        // based on its index and returns that function 
     var x =  function () { 
-        $(`#myList1`).children()[index+1].remove();
+        $(`#blockedWordsList`).children()[index+1].remove();
         wordcount--;
         chrome.storage.sync.get('pclist', function({pclist}){
             pclist.splice(index,1);
@@ -50,7 +50,7 @@ function createDeleteFunction(index) { // makes a diffrent function for every
 
 function addtostoragelist(word) {// recives a word sends it to "appendtolist" and
                                  // adds it to pclist in chrome storage
-    appendtolist("myList1",word)
+    appendtolist("blockedWordsList",word)
     chrome.storage.sync.get('pclist', function({pclist}){
         if(pclist == null)
         {
@@ -68,7 +68,7 @@ $(document).ready(function() { // updates the list to contain words saved previo
         if(pclist == null)
         {return;}
         pclist.forEach(element => {
-            appendtolist("myList1",element)
+            appendtolist("blockedWordsList",element)
         });
     });
 }); 
@@ -122,8 +122,8 @@ $(document).ready(function(){
         e.stopPropagation();
         e.preventDefault();
     })
-    $("#expandarrow").click(()=>{// binds the arrow clicking to expand the list and flips the arrow
-        $("#myList1").slideToggle();
+    $("#expandarrowBW").click(()=>{// binds the arrow clicking to expand the list and flips the arrow
+        $("#blockedWordsList").slideToggle();
         $("#expandarrow").toggleClass("reverse");
     });
     $("#addtolistbt").click(function (){ // everytime this button is clicked the input is sent to 
