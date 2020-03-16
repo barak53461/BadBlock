@@ -124,7 +124,7 @@ $(document).ready(function(){
     })
     $("#expandarrowBW").click(()=>{// binds the arrow clicking to expand the list and flips the arrow
         $("#blockedWordsList").slideToggle();
-        $("#expandarrow").toggleClass("reverse");
+        $("#expandarrowBW").toggleClass("reverse");
     });
     $("#addtolistbt").click(function (){ // everytime this button is clicked the input is sent to 
                                          // "adddtostoragelist" for handeling and the input is cleared
