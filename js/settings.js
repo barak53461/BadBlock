@@ -4,8 +4,6 @@ const BLOCKED_WORDS_LIST_ID = "blockedWordsList";
 const YOUTUBER_LIST_ID = 'youtuberList';
 const YOUTUBER_LIST_STORAGE_NAME = 'ytlist';
 
-var wordcount = 0;
-
 function offTimer(){// obtains the minutes and hours to wait
                     // and passes the time with the appropriate message type to background
     var time = {"hours":$("#thours").val(), "minutes": $("#tminutes").val()};
@@ -19,7 +17,7 @@ function offTimer(){// obtains the minutes and hours to wait
 }
 
 function createDeleteElement(listid, node1, text, storageName) {// creates the deletion element and 
-                                // gives it the appropriate attributes
+                                                                // gives it the appropriate attributes
     var deletenode = document.createElement("img");
     deletenode.id = listid + "Word" + $(listid).children().length+1;
     deletenode.src = "../resources/images/xicon.png";
@@ -54,7 +52,7 @@ function createDeleteFunction(node,text,storageName) { // makes a diffrent funct
  }
 
 function addtostoragelist(word,listid,storageName) {// recives a word sends it to "appendtolist" and
-                                                    // adds it to pclist in chrome storage
+                                                    // adds it to the list with storage name in chrome storage
     appendtolist(listid,word,storageName);
     chrome.storage.sync.get(storageName, function(listdic){
         list = listdic[storageName];
@@ -111,7 +109,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     });
 });
 }
-$(document).ready(function() { // updates the blocked words list to contain words saved previously
+$(document).ready(function() { // updates the blocked words and youtuber lists to contain words and youtubers saved previously
     chrome.storage.sync.get(BLOCKED_WORDS_STORAGE_NAME, function({pclist}){
         if(pclist == null)
         {return;}
@@ -176,7 +174,7 @@ $(document).ready(function(){
             });
         });
     });
-    chrome.storage.sync.get('ytlistMode', function({ytlistMode}){// checks or leaves unchecked the blocked words
+    chrome.storage.sync.get('ytlistMode', function({ytlistMode}){// checks or leaves unchecked the youtube whitelisting
                                                                  // mode according to storage and makes it so
                                                                  // it updates storage if its clicked
         $("#ytbutton").prop("checked",ytlistMode);

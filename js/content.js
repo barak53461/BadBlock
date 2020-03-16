@@ -60,7 +60,6 @@ function getlistfrombg() {
       });
     });
 }
-
 function updatemanuelfound(nodeid,isad) { 
   // recives a node and boolean send to server message with the 
   // boolean indicating wheter the node is a ad or not
