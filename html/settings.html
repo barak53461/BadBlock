@@ -30,9 +30,9 @@
 
         <div id="blockList">
 
-            <div class="custom-control custom-checkbox" id="listheader" style="font-size: medium;">
+            <div class="custom-control custom-checkbox listheader" style="font-size: medium;">
                 <a>Blocked words</a>
-                <input id='pcbutton' class="custom-control-input" type="checkbox">
+                <input id='pcbutton' class="custom-control-input checkboxes" type="checkbox">
                 <label class="custom-control-label" for="pcbutton"></label>
                 <!-- <div class="custom-control custom-checkbox">
                     <input type="checkbox" class="custom-control-input" id="pcbutton">
@@ -43,14 +43,40 @@
 
             <ul id="blockedWordsList">
                 <li>
-                    <form class="form-inline" id="inputLine">
-                        <input type="text" class="form-control mb-2 mr-sm-2" style="width: 150px;" id="inputarea">&nbsp;
-                        <input id="addtolistbt" class="btn btn-danger" type="button" value="add" style="float: right;"></input>
+                    <form class="form-inline inputLine">
+                        <input type="text" class="form-control mb-2 mr-sm-2" style="width: 150px;" id="inputBWarea">&nbsp;
+                        <input id="addtolistBWbt" class="btn btn-danger addtolistbuttons" type="button" value="add" style="float: right;"></input>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        
+        <br>
+        
+        <div id="ytList">
+            
+
+            <div class="custom-control custom-checkbox listheader" style="font-size: medium;">
+                <a>whitelist youtubers</a>
+                <input id='ytbutton' class="custom-control-input checkboxes" type="checkbox">
+                <label class="custom-control-label" for="ytbutton"></label>
+                <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="pcbutton">
+                    <label class="custom-control-label" for="customCheck1"></label>
+                </div> -->
+                <img id="expandarrowYT" src="../resources/images/downarrow.png" style="float: right; width: 22px; height: 22px;" >
+            </div>
+
+            <ul id="youtuberList">
+                <li>
+                    <form class="form-inline inputLine">
+                        <input type="text" class="form-control mb-2 mr-sm-2" style="width: 150px;" id="inputYTarea">&nbsp;
+                        <input id="addtolistYTbt" class="btn btn-danger addtolistbuttons" type="button" value="add" style="float: right;"></input>
                     </form>
                 </li>
             </ul>
 
-        </div>
+        </div>    
 
         <br>
 

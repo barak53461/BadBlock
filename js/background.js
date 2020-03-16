@@ -3,6 +3,7 @@ const REGEXJSFILTER = /[a-zA-Z0-9_:/.-]+\.js/mg;
 const INITIALBLURVALUE = 1.0;
 const DEFULTMODE = "block";
 const DEFULTPCMODE = true;
+const DEFULTYTMODE = true;''
 const FILTER = {urls: ["<all_urls>"]}; // urls to FILTER
 const OPT_EXREAINFOSPEC = ["blocking"];
 const SERVERURL = "http://127.0.0.1:8080";
@@ -23,9 +24,16 @@ chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.sync.set({'pclistMode': DEFULTPCMODE}, function() {
       console.log(`defined parent control mode : ${DEFULTPCMODE}`);
     });
+    chrome.storage.sync.set({'ytlist': []}, function() {
+      console.log(`defined empty parental control list in storage`);
+    });
+    chrome.storage.sync.set({'ytlistMode': DEFULTYTMODE}, function() {
+      console.log(`defined parent control mode : ${DEFULTPCMODE}`);
+    });
     chrome.storage.sync.set({'whitelist': ['spacesaver']},function(){
       console.log('made an empty whitelist');
-    });  
+    });
+      
 });
 
 function updatekarma(nodeid, isad) { 

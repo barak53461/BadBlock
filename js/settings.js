@@ -1,4 +1,9 @@
 const DELETE_IMGS_CLASS = "deleteimgs";
+const BLOCKED_WORDS_STORAGE_NAME = "pclist";
+const BLOCKED_WORDS_LIST_ID = "blockedWordsList";
+const YOUTUBER_LIST_ID = 'youtuberList';
+const YOUTUBER_LIST_STORAGE_NAME = 'ytlist';
+
 var wordcount = 0;
 
 function offTimer(){// obtains the minutes and hours to wait
@@ -13,65 +18,56 @@ function offTimer(){// obtains the minutes and hours to wait
     });
 }
 
-function createDeleteElement() {// creates the deletion element and 
+function createDeleteElement(listid, node1, text, storageName) {// creates the deletion element and 
                                 // gives it the appropriate attributes
     var deletenode = document.createElement("img");
-    deletenode.id = "word" + wordcount;
+    deletenode.id = listid + "Word" + $(listid).children().length+1;
     deletenode.src = "../resources/images/xicon.png";
     deletenode.align = "middle";
     deletenode.classList.add(DELETE_IMGS_CLASS);
-    deletenode.onclick = createDeleteFunction(wordcount++);
+    deletenode.onclick = createDeleteFunction(node1,text,storageName);
     return deletenode;
  }
 
-function appendtolist(listid,text){// gets a list and text adds it to the list with
+function appendtolist(listid, text, storageName){// gets a list and text adds it to the list with
                                    // the appropriate sub elements and attributes
     var node1=document.createElement("li");
     var textnode1=document.createTextNode(text);
-    var deletenode = createDeleteElement();
+    var deletenode = createDeleteElement(listid,node1,text,storageName);
     node1.appendChild(deletenode);
     node1.appendChild(textnode1);
     var t=document.getElementById(listid);
     t.appendChild(node1);
 }
 
-function createDeleteFunction(index) { // makes a diffrent function for every 
+function createDeleteFunction(node,text,storageName) { // makes a diffrent function for every 
                                        // based on its index and returns that function 
     var x =  function () { 
-        $(`#blockedWordsList`).children()[index+1].remove();
-        wordcount--;
-        chrome.storage.sync.get('pclist', function({pclist}){
-            pclist.splice(index,1);
-            chrome.storage.sync.set({'pclist': pclist}, function() {});
+        node.remove();
+        chrome.storage.sync.get(storageName, function(listdic){
+            list = listdic[storageName];
+            list.splice(list.indexOf(text),1);
+            chrome.storage.sync.set({[storageName]: list}, function() {});
         });
      }
      return x;
  }
 
-function addtostoragelist(word) {// recives a word sends it to "appendtolist" and
-                                 // adds it to pclist in chrome storage
-    appendtolist("blockedWordsList",word)
-    chrome.storage.sync.get('pclist', function({pclist}){
-        if(pclist == null)
+function addtostoragelist(word,listid,storageName) {// recives a word sends it to "appendtolist" and
+                                                    // adds it to pclist in chrome storage
+    appendtolist(listid,word,storageName);
+    chrome.storage.sync.get(storageName, function(listdic){
+        list = listdic[storageName];
+        if(list == null)
         {
-            chrome.storage.sync.set({'pclist': [word]}, function() {});
+            chrome.storage.sync.set({[storageName]: [word]}, function() {});
             console.log(word);
             return;
         }
-        pclist.push(word);
-        chrome.storage.sync.set({'pclist': pclist}, function() {});
+        list.push(word);
+        chrome.storage.sync.set({[storageName]: list}, function() {});
     });
 }
-
-$(document).ready(function() { // updates the list to contain words saved previously
-    chrome.storage.sync.get('pclist', function({pclist}){
-        if(pclist == null)
-        {return;}
-        pclist.forEach(element => {
-            appendtolist("blockedWordsList",element)
-        });
-    });
-}); 
 
 function getOrigin(url) { // recives a url and returns its origin for example:
                           // getOrigin('https://www.youtube.com/watch?v=oHg5SJYRHA0') = www.youtube.com
@@ -115,24 +111,59 @@ chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     });
 });
 }
+$(document).ready(function() { // updates the blocked words list to contain words saved previously
+    chrome.storage.sync.get(BLOCKED_WORDS_STORAGE_NAME, function({pclist}){
+        if(pclist == null)
+        {return;}
+        pclist.forEach(element => {
+            appendtolist(BLOCKED_WORDS_LIST_ID,element,BLOCKED_WORDS_STORAGE_NAME);
+        });
+    });
+    chrome.storage.sync.get(YOUTUBER_LIST_STORAGE_NAME, function({ytlist}){
+        if(ytlist == null)
+        {return;}
+        ytlist.forEach(element => {
+            appendtolist(YOUTUBER_LIST_ID,element,YOUTUBER_LIST_STORAGE_NAME);
+        });
+    });
+}); 
+
+
+
 $(document).ready(function(){
     $('#whitelistPage').click(addToWL); //binds both the add and remove whitelist buttons
     $('#unWhitelistPage').click(removeFromWL);
     $(document).on('click', ".header", function(e) {// makes it so only the image in header is a link
         e.stopPropagation();
         e.preventDefault();
-    })
+    });
+
     $("#expandarrowBW").click(()=>{// binds the arrow clicking to expand the list and flips the arrow
         $("#blockedWordsList").slideToggle();
         $("#expandarrowBW").toggleClass("reverse");
     });
-    $("#addtolistbt").click(function (){ // everytime this button is clicked the input is sent to 
+
+    $("#expandarrowYT").click(()=>{// binds the arrow clicking to expand the list and flips the arrow
+        $("#youtuberList").slideToggle();
+        $("#expandarrowYT").toggleClass("reverse");
+    });
+
+    $("#addtolistBWbt").click(function (){ // everytime this button is clicked the input is sent to 
                                          // "adddtostoragelist" for handeling and the input is cleared
-        newdata = $("#inputarea").val();
+        newdata = $("#inputBWarea").val();
         if(newdata == "")
         {return;}
-        addtostoragelist(newdata);
-        $("#inputarea").val("");
+        addtostoragelist(newdata, BLOCKED_WORDS_LIST_ID, BLOCKED_WORDS_STORAGE_NAME);
+        $("#inputBWarea").val("");
+    });
+
+    $("#addtolistYTbt").click(function (){ // everytime this button is clicked the input is sent to 
+        // "adddtostoragelist" for handeling and the input is cleared
+        newdata = $("#inputYTarea").val();
+        if(newdata == "")
+        {return;}
+        addtostoragelist(newdata, YOUTUBER_LIST_ID, YOUTUBER_LIST_STORAGE_NAME);
+        $("#inputYTarea").val("");
     });
     $("#tbutton").click(offTimer);// binds the timer handler
     chrome.storage.sync.get('pclistMode', function({pclistMode}){// checks or leaves unchecked the blocked words
@@ -142,6 +173,16 @@ $(document).ready(function(){
         $("#pcbutton").click(()=>{
             chrome.storage.sync.get('pclistMode', function({pclistMode}){
                 chrome.storage.sync.set({'pclistMode': !(pclistMode)}, function() {});
+            });
+        });
+    });
+    chrome.storage.sync.get('ytlistMode', function({ytlistMode}){// checks or leaves unchecked the blocked words
+                                                                 // mode according to storage and makes it so
+                                                                 // it updates storage if its clicked
+        $("#ytbutton").prop("checked",ytlistMode);
+        $("#ytbutton").click(()=>{
+            chrome.storage.sync.get('ytlistMode', function({ytlistMode}){
+                chrome.storage.sync.set({'ytlistMode': !(ytlistMode)}, function() {});
             });
         });
     });

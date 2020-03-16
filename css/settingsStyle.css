@@ -19,37 +19,36 @@ li{
     color:#fff;
     border-bottom: 1px solid black;    
 }
-li:nth-child(even),#listheader{
+li:nth-child(even),.listheader{
     background-color:#0069d9;
 }
 li:nth-child(odd){
     background-color:#0069d9;
 }
-#pcbutton{
-    vertical-align: middle;    
-}
-#blockedWordsList
+
+#blockedWordsList,#youtuberList
 {
     display: none;
 }
-#listheader{
+.listheader{
     color: #fff;
     width:250px;
     padding:15px 20px;
     margin:0;
     border-bottom: 1px solid black;
 }
-#addtolistbt{
+.addtolistbuttons{
     position: relative;
     top: -4px;
     right: -5px;
 }
-#pcbutton{
+.checkboxes{
+    vertical-align: middle;   
     position: relative;
     right: -15px;
     margin-left: 10px;
 }
-#inputLine{
+.inputLine{
     padding-bottom: 0px!important ;
     height:20px;
 }
