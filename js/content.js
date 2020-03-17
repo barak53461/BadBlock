@@ -60,6 +60,53 @@ function getlistfrombg() {
       });
     });
 }
+function getYoutubeChannel(){
+  t = $("#text-container");
+  channelname = $(t.children()[0]).children()[0];
+  return channelname.innerHTML;
+}
+function youtubeHandler() { 
+  if(window.location.host === "www.youtube.com")
+  {
+    chrome.storage.sync.get('ytlistMode', function({ytlistMode}){
+      if(!ytlistMode){
+        blockYoutubeAd();
+        return;
+      }
+    });
+    chrome.storage.sync.get('ytlist', function({ytlist}) {
+      currentChannel = getYoutubeChannel().toLowerCase();
+        ytlist.forEach(ytChannel => {
+          if(ytChannel.toLowerCase() === currentChannel)
+          {return;}
+        });
+        blockYoutubeAd();
+    });
+    
+  }
+}
+
+function blockYoutubeAd() {
+  document.cookie="VISITOR_INFO1_LIVE=oKckVSqvaGw; path=/; domain=.youtube.com";
+  window.location.reload();
+  const clear = (() => {
+    const defined = v => v !== null && v !== undefined;
+    const timeout = setInterval(() => {
+      const ad = [...document.querySelectorAll('.ad-showing')][0];
+      if (defined(ad)) {
+        const video = document.querySelector('video');
+        if (defined(video)) {
+          console.log(video.currentTime + "    " + video.duration);
+          video.currentTime = video.duration + 1;
+        }
+      }
+    }, 100);
+    return function () {
+      clearTimeout(timeout);
+    };
+  })();
+}
+
 function updatemanuelfound(nodeid,isad) { 
   // recives a node and boolean send to server message with the 
   // boolean indicating wheter the node is a ad or not
@@ -215,13 +262,14 @@ function handeladblock(){
               }
           });
       }else{// NOTE TO SELF: this has some potentiol to be more efficiant work on it
+        youtubeHandler();
         if(mode == 'block')
           {
             //incase mode is set on block it will go thru our list of ids to block and hide them while counting how many it hid
             id_black_list.forEach(element =>
             {
               node = element.slice(2);//removes the easy list marking and leaves only the id/class with jquary identification (./#)
-              if(node != `` && $(node).length != 0)
+              if(node != '' && $(node).length != 0)
               {  
                 $(node).removeClass(`blurme`);
                 $(node).hide();
