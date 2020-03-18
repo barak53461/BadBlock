@@ -28,7 +28,7 @@ function createDeleteElement(listid, node1, text, storageName) {// creates the d
  }
 
 function appendtolist(listid, text, storageName){// gets a list and text adds it to the list with
-                                   // the appropriate sub elements and attributes
+                                                 // the appropriate sub elements and attributes
     var node1=document.createElement("li");
     var textnode1=document.createTextNode(text);
     var deletenode = createDeleteElement(listid,node1,text,storageName);

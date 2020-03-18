@@ -87,8 +87,8 @@ function youtubeHandler() {
 }
 
 function blockYoutubeAd() {
-  document.cookie="VISITOR_INFO1_LIVE=oKckVSqvaGw; path=/; domain=.youtube.com";
-  window.location.reload();
+/*   document.cookie="VISITOR_INFO1_LIVE=oKckVSqvaGw; path=/; domain=.youtube.com";
+  window.location.reload(); */
   const clear = (() => {
     const defined = v => v !== null && v !== undefined;
     const timeout = setInterval(() => {

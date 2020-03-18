@@ -26,11 +26,9 @@ function updateUI(){
     }
   });
   chrome.storage.sync.get("blur", function({blur}){
-  // sets the slider level according to last choice of user and blurs the image accordingly
-  document.getElementById('slider').value = blur*10;
-  $(`#blurSample`).css(`filter`, `blur(${blur}rem)`)
-  // document.getElementById('blurSample').style = `filter:blur(${blurlvl}rem)`
-  // $('#blurSample').css(`filter`, `blur(${blurlvl}rem)`);
+    // sets the slider level according to last choice of user and blurs the image accordingly
+    document.getElementById('slider').value = blur*10;
+    $(`#blurSample`).css(`filter`, `blur(${blur}rem)`)
   });
   WLMessge();
 }
