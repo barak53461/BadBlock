@@ -128,9 +128,10 @@ function handeladblock(){
     });
     chrome.webRequest.onBeforeRequest.addListener(function(details){
       //sets up a listner that fires before request's 
-      if(checkIfScriptLocal(details.url) || mode !== 'block') // exits function if the request is local or if the addon is off
+      if(checkIfScriptLocal(details.url) || mode !== 'block' ) // exits function if the request is local or if the addon is off
       {return;} 
-
+      if(!url.match(REGEXJSFILTER)) // if the url dosnt match the regex filter it cant match a url and comparing them would mean loss in efficancy
+      {return;}
       var cancel = null;
       urllst.forEach(url => {// goes over the urls we have and compares them to the 
                              // current request if they are the same blocks the request
