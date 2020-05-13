@@ -29,7 +29,7 @@ li:nth-child(odd){
 li:last-child{
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
-    border-bottom: none !important;
+    border-bottom: none;
 }
 
 #blockedWordsList,#youtuberList

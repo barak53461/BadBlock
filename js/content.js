@@ -11,6 +11,8 @@ const EASTLIST_FILTER = /^##.*$/mg;// filter by which we fish out the ids and cl
 maunelremovemode = false; // false means off true means on
 manuelremovelist = {}; // will be filled from background
 ads_found = 0;
+manuelFoundList = [];
+manuelIndex = 0;
 
 function DOMcensor(el, word,len) { // makes shure that the words we censor are not tags/attributes for example 
                                    // if we want to censore the word armani some site may have a <armani> tag 
@@ -158,44 +160,52 @@ function checkifad(node,nodeid) {
     // returns the original node and gets rid of the ui 
     console.log(container.childNodes);
     node.hidden = false;
-    while(container.childNodes.length > 1)
-    {
-      container.childNodes.forEach((child)=>{
-        if(child != node)
-        {
-          $(child).remove();
-        }
-      });
-    }
+    // while(container.childNodes.length > 1)
+    // {
+    //   container.childNodes.forEach((child)=>{
+    //     if(child != node)
+    //     {
+    //       $(child).remove();
+    //     }
+    //   });
+    // }
+    uncontain(container,node);
     updatemanuelfound(nodeid,false);// passes the id to the function with 
                                     // false parameter signeling it wasnt an ad
   });
   $(buttondir["isadbutton"]).on('click',function (){
     //removes the node that is an ad and the ui on click
-    while(container.childNodes.length > 1)
-    {
-      container.childNodes.forEach((child)=>{
-        if(child != node)
-        {
-          $(child).remove();
-        }
-      });
-    }
+    // while(container.childNodes.length > 1)
+    // {
+    //   container.childNodes.forEach((child)=>{
+    //     if(child != node)
+    //     {
+    //       $(child).remove();
+    //     }
+    //   });
+    // }
+    uncontain(container,node);// this function basiclly makes the while 
+                              // loop redundent and does it much more effichently
     updatemanuelfound(nodeid,true);// passes the id to the function with 
                                    // false parameter signeling it wasnt an ad
   });
 
 }
-
+function uncontain(container,node){
+  //reverses the effect of the next function and deletes the contained
+  parent = container.parentElement;
+  parent.replaceChild(node,container);
+  container.remove();
+}
 function contain(htmlnode) { 
   // surrounds the recived html element with a div parent and returns 
   // the container with the element nested within
-  parent = $(htmlnode).parent();
+  parent = htmlnode.parentNode;
   container = document.createElement('div');
-  container.id = "test"
+  container.id = "manuelfound" + manuelIndex;
   console.log(container);
+  parent.replaceChild(container,htmlnode);
   container.appendChild(htmlnode);
-  parent[0].appendChild(container);
   return container;
 }
 
@@ -211,7 +221,11 @@ function comparestrtohtml(node,dicnode,approved) {// runs oveer all the dom and 
     if(approved)
     {node.hidden = true;}
     else
-    {checkifad(node,dicnode['id']);}
+    {
+      manuelFoundList[manuelIndex++] = [node,dicnode['id']];
+      console.log(manuelFoundList+ " " + manuelIndex);
+      checkifad(node,dicnode['id']);
+    }
   }
   comparestrtohtml(node.firstElementChild,dicnode,approved);
   comparestrtohtml(node.nextElementSibling,dicnode,approved);
@@ -339,7 +353,15 @@ function removeme(e) {// removes the sent element and passes it to send to backg
 
 function elementclicked(e){ // manuel remove onclick handler 
     $(e.target).removeAttr('xmlns');
-    $(e.target).removeClass("hova");//makes shure we dont add something to the database with unwanted attributes
+    $(e.target).removeClass("hova").filter('[class=""]').removeAttr('class');
+    /*
+    top line is identical to 
+    $(e.target).removeClass("hova");
+    if($(e.target).classes.length == 0)
+      $(e.target).removeAttr("class")
+    makes shure we dont have an empty class tag
+    */
+
     turnoffmanuel();
     removeme(e)
 }
