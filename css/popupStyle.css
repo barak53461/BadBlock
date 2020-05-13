@@ -9,6 +9,7 @@ body {
     background-repeat:repeat;
     float: left;
     left: 0px;
+    margin-left: 10px;
 }
 
 ul {
