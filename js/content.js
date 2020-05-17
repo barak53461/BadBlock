@@ -38,6 +38,7 @@ function getpclist() {
     {return;}
     chrome.storage.sync.get('pclist', function({pclist}){
       pclist.forEach(word=>{
+        console.log(`\\b${word}\\b`);
         DOMcensor(document.body,new RegExp(`\\b${word}\\b`, "gmi"),word.length);
       });  
     });
@@ -358,7 +359,7 @@ function elementclicked(e){ // manuel remove onclick handler
     top line is identical to 
     $(e.target).removeClass("hova");
     if($(e.target).classes.length == 0)
-      $(e.target).removeAttr("class")
+      $(e.target).removeAttr("class");
     makes shure we dont have an empty class tag
     */
 
